@@ -6,6 +6,8 @@ describe Ride do
     @visitor2 = Visitor.new('Tucker', 36, '$5')
     @visitor3 = Visitor.new('Penny', 64, '$15')
     @ride1 = Ride.new({ name: 'Carousel', min_height: 24, admission_fee: 1, excitement: :gentle })
+    @ride2 = Ride.new({ name: 'Ferris Wheel', min_height: 36, admission_fee: 5, excitement: :gentle })
+    @ride3 = Ride.new({ name: 'Roller Coaster', min_height: 54, admission_fee: 2, excitement: :thrilling })
   end
 
   it "exists and has readable attributes" do
@@ -46,6 +48,61 @@ describe Ride do
 
     expect(@visitor1.spending_money).to eq(8)
     expect(@visitor2.spending_money).to eq(4)
+  end
 
+  it "cannot board a rider who is not tall enough or does not have a matching preference for excitement" do
+    @visitor1.add_preference(:gentle)
+    @visitor2.add_preference(:gentle)
+    @visitor2.add_preference(:thrilling)
+    @visitor3.add_preference(:thrilling)
+
+    @ride1.board_rider(@visitor1)
+    @ride1.board_rider(@visitor2)
+    @ride1.board_rider(@visitor1)
+
+    expect(@visitor1.spending_money).to eq(8)
+    expect(@visitor2.spending_money).to eq(4)
+    expect(@visitor3.spending_money).to eq(15)
+    
+    @ride3.board_rider(@visitor1)
+    @ride3.board_rider(@visitor2)
+    @ride3.board_rider(@visitor3)
+
+    expect(@visitor1.spending_money).to eq(8)
+    expect(@visitor2.spending_money).to eq(4)
+    expect(@visitor3.spending_money).to eq(13)
+    
+    expect(@ride3.rider_log).to eq({@visitor3 => 1})
+  end
+
+  it "can calculate the ride's total revenue" do
+    @visitor1.add_preference(:gentle)
+    @visitor2.add_preference(:gentle)
+    @visitor2.add_preference(:thrilling)
+    @visitor3.add_preference(:thrilling)
+
+    expect(@ride1.total_revenue).to eq(0)
+    expect(@ride2.total_revenue).to eq(0)
+    expect(@ride3.total_revenue).to eq(0)
+
+    @ride1.board_rider(@visitor1)
+    @ride1.board_rider(@visitor2)
+    @ride1.board_rider(@visitor1)
+
+    expect(@ride1.total_revenue).to eq(3)
+    expect(@ride2.total_revenue).to eq(0)
+    expect(@ride3.total_revenue).to eq(0)
+
+    expect(@visitor1.spending_money).to eq(8)
+    expect(@visitor2.spending_money).to eq(4)
+    expect(@visitor3.spending_money).to eq(15)
+    
+    @ride3.board_rider(@visitor1)
+    @ride3.board_rider(@visitor2)
+    @ride3.board_rider(@visitor3)
+
+    expect(@ride1.total_revenue).to eq(3)
+    expect(@ride2.total_revenue).to eq(0)
+    expect(@ride3.total_revenue).to eq(2)
   end
 end
