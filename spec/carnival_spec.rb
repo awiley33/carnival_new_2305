@@ -60,12 +60,32 @@ describe Carnival do
     @ride1.board_rider(@visitor1) 
     @ride1.board_rider(@visitor2)
     @ride1.board_rider(@visitor1)
-    @ride1.board_rider(@visitor1) # $4
+    @ride1.board_rider(@visitor1)
     @ride3.board_rider(@visitor3)
-    @ride3.board_rider(@visitor3) # $4
-    @ride2.board_rider(@visitor2) # $5
+    @ride3.board_rider(@visitor3)
+    @ride2.board_rider(@visitor2)
     
     expect(@carnival1.most_profitable_ride).to eq(@ride2)
+  end
+
+  it "can calculate the total revenue from all its rides" do
+    @carnival1.add_ride(@ride1)
+    @carnival1.add_ride(@ride2)
+    @carnival1.add_ride(@ride3)
+
+    @visitor1.add_preference(:gentle)
+    @visitor2.add_preference(:gentle)
+    @visitor3.add_preference(:thrilling)
+
+    @ride1.board_rider(@visitor1) 
+    @ride1.board_rider(@visitor2)
+    @ride1.board_rider(@visitor1)
+    @ride1.board_rider(@visitor1)
+    @ride3.board_rider(@visitor3)
+    @ride3.board_rider(@visitor3)
+    @ride2.board_rider(@visitor2)
+
+    expect(@carnival1.total_revenue).to eq(13)
   end
 
 end
