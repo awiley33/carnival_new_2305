@@ -21,4 +21,8 @@ class Visitor
     else false
     end
   end
+
+  def ride(cost)
+    @spending_money -= cost
+  end
 end

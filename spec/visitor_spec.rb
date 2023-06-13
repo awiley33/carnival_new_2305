@@ -31,4 +31,14 @@ describe Visitor do
     expect(@visitor3.tall_enough?(54)).to be true
     expect(@visitor1.tall_enough?(64)).to be false
   end
+
+  it "can ride a ride which reduces its spending money each time" do
+    expect(@visitor1.spending_money).to eq(10)
+
+    @visitor1.ride(1)
+    @visitor1.ride(1)
+    @visitor1.ride(1)
+
+    expect(@visitor1.spending_money).to eq(7)
+  end
 end
