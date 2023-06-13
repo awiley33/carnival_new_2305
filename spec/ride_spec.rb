@@ -32,4 +32,20 @@ describe Ride do
 
     expect(@ride1.rider_log).to eq(expected)
   end
+
+  it "reduces a rider's spending money upon boarding" do
+    @visitor1.add_preference(:gentle)
+    @visitor2.add_preference(:gentle)
+
+    expect(@visitor1.spending_money).to eq(10)
+    expect(@visitor2.spending_money).to eq(5)
+
+    @ride1.board_rider(@visitor1)
+    @ride1.board_rider(@visitor2)
+    @ride1.board_rider(@visitor1)
+
+    expect(@visitor1.spending_money).to eq(8)
+    expect(@visitor2.spending_money).to eq(4)
+
+  end
 end
