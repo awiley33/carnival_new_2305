@@ -88,4 +88,60 @@ describe Carnival do
     expect(@carnival1.total_revenue).to eq(13)
   end
 
+  it "can provide a summary hash" do
+    @carnival1.add_ride(@ride1)
+    @carnival1.add_ride(@ride2)
+    @carnival1.add_ride(@ride3)
+
+    @visitor1.add_preference(:gentle)
+    @visitor2.add_preference(:gentle)
+    @visitor3.add_preference(:thrilling)
+
+    @ride1.board_rider(@visitor1) 
+    @ride1.board_rider(@visitor2)
+    @ride1.board_rider(@visitor1)
+    @ride1.board_rider(@visitor1)
+    @ride3.board_rider(@visitor3)
+    @ride3.board_rider(@visitor3)
+    @ride2.board_rider(@visitor2)
+    @ride2.board_rider(@visitor2)
+
+    expected = {
+      visitor_count: 3,
+      revenue_earned: 18,
+      visitors: [
+        {
+          visitor: @visitor1,
+          favorite_ride: @ride1,
+          total_money_spent: 3
+        },
+        {
+          visitor: @visitor2,
+          favorite_ride: @ride2,
+          total_money_spent: 11
+        },
+        {
+          visitor: @visitor3,
+          favorite_ride: @ride3,
+          total_money_spent: 4
+        }],
+      rides: [
+        {
+          ride: @ride1,
+          riders: [@visitor1, @visitor2],
+          total_revenue: 4
+        },
+        {
+          ride: @ride2,
+          riders: [@visitor2],
+          total_revenue: 10
+        },
+        {
+          ride: @ride3,
+          riders: [@visitor3],
+          total_revenue: 4
+        }]
+    }
+  end
+
 end
