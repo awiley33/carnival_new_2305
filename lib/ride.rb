@@ -22,4 +22,8 @@ class Ride
       @total_revenue += @admission_fee
     end
   end
+
+  def ride_count
+    @rider_log.values.sum
+  end
 end
