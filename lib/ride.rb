@@ -17,5 +17,6 @@ class Ride
 
   def board_rider(rider)
     @rider_log[rider] += 1
+    rider.ride(@admission_fee)
   end
 end
