@@ -105,4 +105,21 @@ describe Ride do
     expect(@ride2.total_revenue).to eq(0)
     expect(@ride3.total_revenue).to eq(2)
   end
+
+  it "can tell us the total count of rides" do
+    @visitor1.add_preference(:gentle)
+    @visitor2.add_preference(:gentle)
+    @visitor3.add_preference(:thrilling)
+
+    @ride1.board_rider(@visitor1)
+    @ride1.board_rider(@visitor2)
+    @ride1.board_rider(@visitor1)
+    @ride2.board_rider(@visitor2)
+    @ride3.board_rider(@visitor3)
+    @ride3.board_rider(@visitor3)
+    
+    expect(@ride1.ride_count).to eq(3)
+    expect(@ride2.ride_count).to eq(1)
+    expect(@ride3.ride_count).to eq(2)
+  end
 end
